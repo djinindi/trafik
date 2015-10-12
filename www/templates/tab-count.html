@@ -1,0 +1,16 @@
+<ion-view view-title="Tæller">
+  <ion-content>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="vehicle in vehicles" type="item-text-wrap" href="#/tab/count/{{vehicle.id}}">
+        <img ng-src="{{vehicle.image}}">
+        <h2>{{vehicle.name}}</h2>
+        <p>{{vehicle.count}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+
+        <ion-option-button class="button-assertive" ng-click="remove(vehicle)">
+          Delete
+        </ion-option-button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>
