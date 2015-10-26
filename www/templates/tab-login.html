@@ -1,17 +1,33 @@
-<ion-view view-title="Login">
+<ion-view view-title="Registrering">
+<div class="login-screen">
   <ion-content class="padding">
     <div class="list">
       <label class="item item-input">
-        <span class="input-label">Brugernavn</span>
-        <input type="text">
+        <span class="input-label">Navn</span>
+        <input type="text" placeholder="Hans Jensen" ng-model="user.name">
+      </label>
+      <br>
+      <label class="item item-input">
+        <span class="input-label">Vejnavn</span>
+        <input type="text" placeholder="H.C. Andersens Boulevard" ng-model="user.street">
       </label>
       <label class="item item-input">
-        <span class="input-label">Kodeord</span>
-        <input type="password">
+        <span class="input-label">Vejnr.</span>
+        <input type="number" placeholder="42" ng-model="user.streetnr">
+      </label>
+      <br>
+      <label class="item item-input">
+        <span class="input-label">Dato</span>
+        <input type="date" ng-model="user.date">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Tidsrum</span>
+        <input type="text" placeholder="09-17" ng-model="user.time">
       </label>
       <button class="button button-block button-positive" ui-sref="tab.count">
-          Login
+          Registrer
       </button>
     </div>
   </ion-content>
+</div>
 </ion-view>
