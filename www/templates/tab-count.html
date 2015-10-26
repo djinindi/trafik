@@ -3,7 +3,7 @@
     <ion-list>
       <label class="item input">
         <span class="input-label">Tidspunkt</span>
-        <input type="time" min="7:00" max="20:00" step="900" ng-model="tidspunkt">
+        <input type="text" ng-model="kvarter | date : 'HH:mm'" ng-click="time()">
       </label>
       <ion-item class="item item-input" ng-repeat="category in categories">
         <div class="input-label">{{category.name}}</div>

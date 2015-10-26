@@ -10,7 +10,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('CountCtrl', function($scope, categories, $cordovaDatePicker) {
+.controller('CountCtrl', function($scope, categories, $cordovaDatePicker, $ionicPlatform) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -18,6 +18,7 @@ angular.module('starter.controllers', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+  
   $scope.location = "Lygten 16";
   $scope.username = "Hans Jensen";
   $scope.categories = categories.all();
@@ -34,15 +35,29 @@ angular.module('starter.controllers', [])
     var options = {
       date: new Date(),
       mode: 'time',
+      titleText: 'Tidsrum',
+      okText: 'Ok',
+      cancelText: 'Annuller',
       doneButtonLabel: 'DONE',
       doneButtonColor: '#F2F3F4',
       cancelButtonLabel: 'CANCEL',
       cancelButtonColor: '#000000',
-      minuteInterval: 15
+      minuteInterval: 15,
+      is24Hour: true,
+      locale: 'dk_DK',
+      x: '200',
+      y: '200'
     };
-    $cordovaDatePicker.show(options).then(function(date) {
-      alert(date);
-    }, false);
+    function onSuccess(date) {
+      console.log("cordovaDatePicker: " + date);
+      $scope.kvarter = date;
+    }
+    function onError(error) {
+      console.log("DatePicker error: " + error);
+    }
+    $ionicPlatform.ready(function() {
+      $cordovaDatePicker.show(options, onSuccess, onError);
+    });
   };
 })
 
