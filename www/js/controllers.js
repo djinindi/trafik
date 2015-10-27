@@ -10,7 +10,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('CountCtrl', function($scope, categories, $cordovaDatePicker, $ionicPlatform) {
+.controller('CountCtrl', function($scope, categories, $ionicPlatform) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -22,6 +22,8 @@ angular.module('starter.controllers', [])
   $scope.location = "Lygten 16";
   $scope.username = "Hans Jensen";
   $scope.categories = categories.all();
+  $scope.hours = "";
+  $scope.minutes = "";
   $scope.remove = function(category) {
     if (category.count >= 1) {
       category.count--;
@@ -31,33 +33,38 @@ angular.module('starter.controllers', [])
     category.count++;
   };
 
-  $scope.time = function() {
-    var options = {
-      date: new Date(),
-      mode: 'time',
-      titleText: 'Tidsrum',
-      okText: 'Ok',
-      cancelText: 'Annuller',
-      doneButtonLabel: 'DONE',
-      doneButtonColor: '#F2F3F4',
-      cancelButtonLabel: 'CANCEL',
-      cancelButtonColor: '#000000',
-      minuteInterval: 15,
-      is24Hour: true,
-      locale: 'dk_DK',
-      x: '200',
-      y: '200'
-    };
-    function onSuccess(date) {
-      console.log("cordovaDatePicker: " + date);
-      $scope.kvarter = date;
+  $scope.timePickerObject = {
+    inputEpochTime: ((new Date()).getHours() * 60 * 60),
+    step: 15,
+    format: 24,
+    setLabel: 'Vælg',
+    closeLabel: 'Luk',
+    setButtonType: 'button-balanced',
+    closeButtpnType: 'button-stable',
+    callback: function (val) {
+      console.log('val: ' + (new Date().getHours() * 60 * 60));
+      $scope.timePickerCallback(val);
     }
-    function onError(error) {
-      console.log("DatePicker error: " + error);
+  };
+
+  $scope.timePickerCallback = function (val) {
+    if (typeof (val) === 'undefined') {
+      console.log('Time not selected');
+    } else {
+      $scope.selectedTime = new Date((val * 1000)-(3600 * 1000));
+      $scope.hours = $scope.selectedTime.getUTCHours();
+      $scope.minutes = $scope.selectedTime.getUTCMinutes();
+
+      console.log('Selected time is: ' + $scope.selectedTime);
     }
-    $ionicPlatform.ready(function() {
-      $cordovaDatePicker.show(options, onSuccess, onError);
-    });
+  };
+
+  $scope.sendData = function (form) {
+    if (form.$valid) {
+      for (var i = 0; i < $scope.categories.length; i++) {
+        console.log($scope.categories[i]);
+      }
+    }
   };
 })
 

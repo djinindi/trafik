@@ -1,15 +1,22 @@
 <ion-view view-title="Tæller">
   <ion-content>
-    <ion-list>
-      <label class="item input">
-        <span class="input-label">Tidspunkt</span>
-        <input type="text" ng-model="kvarter | date : 'HH:mm'" ng-click="time()">
+    <form name="countingForm" novalidate="" ng-submit="sendData(countingForm)">
+      <ion-list>
+      <label class="item item-input">
+        <div class="input-label">Tidspunkt</div>
+        <ionic-timepicker class="time-picker" input-obj="timePickerObject">
+          <button class="button button-clear icon-right ion-clock time-button">
+            {{selectedTime | date : 'HH:mm'}}
+            <standard-time-meridian etime='timePickerObject.inputEpochTime'></standard-time-meridian>
+          </button>
+        </ionic-timepicker>
       </label>
       <ion-item class="item item-input" ng-repeat="category in categories">
         <div class="input-label">{{category.name}}</div>
         <input class="input-right" type="tel" ng-model="category.count">
       </ion-item>
       <br>
-      <button class="button button-block button-balanced">Submit</button>
+      <button class="button button-block button-balanced" type="submit">Submit</button>
+    </form>
   </ion-content>
 </ion-view>
