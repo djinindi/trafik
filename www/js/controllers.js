@@ -10,7 +10,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('CountCtrl', function($scope, categories, $ionicPlatform) {
+.controller('CountCtrl', function($scope, categories, $ionicPlatform, $cordovaToast) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -18,6 +18,18 @@ angular.module('starter.controllers', [])
   //
   //$scope.$on('$ionicView.enter', function(e) {
   //});
+
+  $scope.toggleInfo = function(category) {
+    if ($scope.isInfoShown(category)) {
+      $scope.shownInfo = null;
+    } else {
+      $scope.shownInfo = category;
+    }
+  };
+
+  $scope.isInfoShown = function(category) {
+    return $scope.shownInfo === category;
+  };
   
   $scope.location = "Lygten 16";
   $scope.username = "Hans Jensen";
@@ -52,24 +64,23 @@ angular.module('starter.controllers', [])
       console.log('Time not selected');
     } else {
       $scope.selectedTime = new Date((val * 1000)-(3600 * 1000));
-      $scope.hours = $scope.selectedTime.getUTCHours();
-      $scope.minutes = $scope.selectedTime.getUTCMinutes();
+      $scope.hours = $scope.selectedTime.getHours();
+      $scope.minutes = $scope.selectedTime.getMinutes();
 
-      console.log('Selected time is: ' + $scope.selectedTime);
+      console.log('Selected time is: ' + $scope.hours + ':' + $scope.minutes);
     }
   };
 
   $scope.sendData = function (form) {
     if (form.$valid) {
-      for (var i = 0; i < $scope.categories.length; i++) {
-        console.log($scope.categories[i]);
-      }
+      console.log(JSON.stringify($scope.categories, null, 2));
+      $cordovaToast.showLongCenter('Din data er gemt...');
     }
   };
 })
 
-.controller('VehicleDetailCtrl', function($scope, $stateParams, categories) {
-  $scope.category = categories.get($stateParams.vehicleId);
+.controller('CategoryDetailCtrl', function($scope, $stateParams, categories) {
+  $scope.category = categories.get($stateParams.categoryId);
 })
 
 .controller('SettingsCtrl', function($scope) {

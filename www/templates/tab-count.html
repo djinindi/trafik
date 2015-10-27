@@ -1,22 +1,30 @@
 <ion-view view-title="Tæller">
   <ion-content>
-    <form name="countingForm" novalidate="" ng-submit="sendData(countingForm)">
+    <form name="countingForm" novalidate="">
       <ion-list>
-      <label class="item item-input">
-        <div class="input-label">Tidspunkt</div>
-        <ionic-timepicker class="time-picker" input-obj="timePickerObject">
-          <button class="button button-clear icon-right ion-clock time-button">
-            {{selectedTime | date : 'HH:mm'}}
-            <standard-time-meridian etime='timePickerObject.inputEpochTime'></standard-time-meridian>
-          </button>
-        </ionic-timepicker>
-      </label>
-      <ion-item class="item item-input" ng-repeat="category in categories">
-        <div class="input-label">{{category.name}}</div>
-        <input class="input-right" type="tel" ng-model="category.count">
-      </ion-item>
-      <br>
-      <button class="button button-block button-balanced" type="submit">Submit</button>
+        <label class="item item-input">
+          <div class="input-label">Tidspunkt</div>
+          <ionic-timepicker class="time-picker" input-obj="timePickerObject">
+            <button class="button button-clear icon-right ion-clock time-button">
+              {{selectedTime | date : 'HH:mm'}}
+              <standard-time-meridian etime='timePickerObject.inputEpochTime'></standard-time-meridian>
+            </button>
+          </ionic-timepicker>
+        </label>
+        <div ng-repeat="category in categories">
+          <ion-item class="item-stable item-input">
+            <i class="icon" ng-class="isInfoShown(category) ? 'ion-chevron-down' : 'ion-chevron-right'" ng-click="toggleInfo(category)" ng-class="{active: isInfoShown(category)}"></i>
+            &nbsp;
+            {{category.name}}
+            <input class="input-right" type="number" ng-model="category.count">
+          </ion-item>
+          <ion-item class="item-accordion" ng-show="isInfoShown(category)">
+            Her står der noget info om kategorien
+          </ion-item>
+        </div>
+        <br>
+        <button class="button button-block button-balanced" ng-click="sendData(countingForm)">Submit</button>
+      </ion-list>
     </form>
   </ion-content>
 </ion-view>
