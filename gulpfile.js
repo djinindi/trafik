@@ -40,6 +40,10 @@ gulp.task('ipad', function(done) {
   sh.exec('ionic run ios --target=\"iPad-Air\"', done);
 });
 
+gulp.task("emulate android", function(done){
+  sh.exec("ionic run android", done);
+});
+
 gulp.task('install', ['git-check'], function() {
   return bower.commands.install()
     .on('log', function(data) {
