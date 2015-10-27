@@ -13,13 +13,15 @@
         </label>
         <div ng-repeat="category in categories">
           <ion-item class="item-stable item-input">
-            <i class="icon" ng-class="isInfoShown(category) ? 'ion-chevron-down' : 'ion-chevron-right'" ng-click="toggleInfo(category)" ng-class="{active: isInfoShown(category)}"></i>
-            &nbsp;
-            {{category.name}}
+            <div ng-click="toggleInfo(category)" ng-class="{active: isInfoShown(category)}">
+              <i class="icon" ng-class="isInfoShown(category) ? 'ion-chevron-down' : 'ion-chevron-right'"></i>
+              &nbsp;
+              {{category.name}}
+            </div>
             <input class="input-right" type="number" ng-model="category.count">
           </ion-item>
           <ion-item class="item-accordion" ng-show="isInfoShown(category)">
-            Her står der noget info om kategorien
+            {{category.info}}
           </ion-item>
         </div>
         <br>
