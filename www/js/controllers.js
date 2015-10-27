@@ -36,13 +36,21 @@ angular.module('starter.controllers', [])
   $scope.categories = categories.all();
   $scope.hours = "";
   $scope.minutes = "";
-  $scope.remove = function(category) {
-    if (category.count >= 1) {
-      category.count--;
+  $scope.minus = function(category) {
+    if (typeof (category.count) === 'undefined') {
+      category.count = 0;
+    } else {
+      if (category.count >= 1) {
+        category.count--;
+      }
     }
   };
   $scope.plus = function(category) {
-    category.count++;
+    if (typeof (category.count) === 'undefined') {
+      category.count = 1;
+    } else {
+      category.count++;
+    }
   };
 
   $scope.timePickerObject = {

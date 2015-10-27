@@ -32,6 +32,14 @@ gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
 });
 
+gulp.task('serve', function(done) {
+  sh.exec('ionic serve', done);
+});
+
+gulp.task('ipad', function(done) {
+  sh.exec('ionic run ios --target=\"iPad-Air\"', done);
+});
+
 gulp.task('install', ['git-check'], function() {
   return bower.commands.install()
     .on('log', function(data) {

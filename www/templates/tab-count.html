@@ -18,10 +18,15 @@
               &nbsp;
               {{category.name}}
             </div>
-            <input class="input-right" type="number" ng-model="category.count">
+            <input class="input-right" type="number" min=0 ng-model="category.count">
           </ion-item>
           <ion-item class="item-accordion" ng-show="isInfoShown(category)">
             {{category.info}}
+            &nbsp;
+            <div class="input-right info-buttons">
+              <a class="button button-icon icon ion-plus" ng-click="plus(category)"></a>
+              <a class="button button-icon icon ion-minus" ng-click="minus(category)"></a>
+            </div>
           </ion-item>
         </div>
         <br>
