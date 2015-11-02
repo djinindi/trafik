@@ -1,5 +1,29 @@
 angular.module('starter.services', [])
 
+.service('LoginService', function($q) {
+  return {
+    loginUser: function(id) {
+      var deferred = $q.defer();
+      var promise = deferred.promise;
+
+      if (id === 1337) {
+        deferred.resolve('Welcome ' + id + '!');
+      } else {
+        deferred.reject('Wrong!');
+      }
+      promise.success = function(fn) {
+        promise.then(fn);
+        return promise;
+      };
+      promise.error = function(fn) {
+        promise.then(null, fn);
+        return promise;
+      };
+      return promise;
+    }
+  };
+})
+
 .factory('categories', function() {
   // Might use a resource here that returns a JSON array
   var categories = [{

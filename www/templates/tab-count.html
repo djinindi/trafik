@@ -5,10 +5,10 @@
         <label class="item item-input">
           <div class="input-label">Tidspunkt</div>
           <ionic-timepicker class="time-picker" input-obj="timePickerObject">
-            <button class="button button-clear icon-right ion-clock time-button">
-              {{selectedTime | date : 'HH:mm'}}
+            <input class="input-right time-input" type="text" ng-model="selectedTime" required>
+            <i class="ion-clock time-button">
               <standard-time-meridian etime='timePickerObject.inputEpochTime'></standard-time-meridian>
-            </button>
+            </i>
           </ionic-timepicker>
         </label>
         <div ng-repeat="category in categories">
@@ -33,5 +33,6 @@
         <button class="button button-block button-balanced" ng-click="sendData(countingForm)">Submit</button>
       </ion-list>
     </form>
+    {{thisCount.name}}
   </ion-content>
 </ion-view>

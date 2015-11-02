@@ -15,7 +15,13 @@
 .time-picker {
     width: 65%;
     text-align: right;
-    padding-right: 16px;
+    padding-right: 35px;
+    font-size: 22px;
+    display: flex;
+
+    .time-input {
+        margin: auto 0;
+    }
 }
 
 .input-label {
