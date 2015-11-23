@@ -21,6 +21,9 @@
 .input-label {
   max-width: 300px !important; }
 
+.task-info {
+  text-align: center; }
+
 @charset "UTF-8";
 /*
 To customize the look and feel of Ionic, you can override the variables

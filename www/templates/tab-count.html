@@ -16,12 +16,12 @@
             <div ng-click="toggleInfo(category)" ng-class="{active: isInfoShown(category)}">
               <i class="icon" ng-class="isInfoShown(category) ? 'ion-chevron-down' : 'ion-chevron-right'"></i>
               &nbsp;
-              {{category.name}}
+              {{category.Name}}
             </div>
             <input class="input-right" type="number" min=0 ng-model="category.count">
           </ion-item>
           <ion-item class="item-accordion" ng-show="isInfoShown(category)">
-            {{category.info}}
+            {{category.Info}}
             &nbsp;
             <div class="input-right info-buttons">
               <a class="button button-icon icon ion-plus" ng-click="plus(category)"></a>
@@ -33,6 +33,10 @@
         <button class="button button-block button-balanced" ng-click="sendData(countingForm)">Submit</button>
       </ion-list>
     </form>
-    {{thisCount.name}}
+    <div class="task-info">
+      {{thisCount.name}}
+      <br>
+      Din vagt: {{thisCount.start}}-{{thisCount.end}}
+    </div>
   </ion-content>
 </ion-view>

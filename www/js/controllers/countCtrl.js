@@ -1,48 +1,25 @@
-angular.module('starter.controllers', [])
-
-.controller('LoginCtrl', function($scope, $rootScope, LoginService, $state, $http, $cordovaToast, $filter) {
-  $scope.user = {
-    date: $filter('date')(new Date(), 'd MMMM yyyy')
-  };
-
-  $scope.login = function() {
-    var link = 'http://jonasja.dk/api.php';
-    $http.post(link, {userid : $scope.user.id}).then(function(res) {
-      if (res.data.status == 'success') {
-        console.log(res.data.name);
-        $rootScope.userDate = $scope.user.date;
-        $rootScope.userName = res.data.name;
-        $rootScope.userId = res.data.id;
-        $state.go("tab.count");
-        console.log("Great Success");
-      } else {
-        console.log(res);
-        console.log("WRONG!");
-        $cordovaToast.showLongBottom("Forkert ID");
+var url = require('../../config.js').apiUrl;
+var countCtrl = function($scope, $rootScope, $filter, CategoryFactory, VarFactory, $ionicPlatform, $cordovaToast, $http) {
+  $scope.$on("$ionicView.enter", function(scopes, states) {
+    if(states.fromCache && states.stateName == "tab.count") {
+      $scope.thisCount.name = VarFactory.getVar('userName');
+      $scope.thisCount.start = VarFactory.getVar('taskStart');
+      $scope.thisCount.end = VarFactory.getVar('taskEnd');
+      if (typeof ($scope.categories) === 'undefined') {
+        $scope.getCategoryData();
       }
-    });
-    console.log("Login, ID: " + $scope.user.id + " - Date: " + $scope.user.date);
-  };
-})
-
-.controller('CountCtrl', function($scope, $rootScope, $filter, categories, $ionicPlatform, $cordovaToast) {
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  $scope.$on('$ionicView.enter', function(e) {
-    $scope.thisCount.name = $rootScope.userName;
+    }
   });
 
-  $scope.categories = categories.all();
+  $scope.getCategoryData = function() {
+    CategoryFactory.getAllCategories(function(cats) {
+      $scope.categories = cats.data;
+    });
+  };
+
   $scope.thisCount = {
     date: $rootScope.userDate,
-    userid: $rootScope.userId,
-    name: $rootScope.userName
+    userid: $rootScope.userId
   };
 
   $scope.toggleInfo = function(category) {
@@ -108,26 +85,28 @@ angular.module('starter.controllers', [])
         if (typeof (cat.count) === 'undefined') {
           cat.count = 0;
         }
-        console.log('ID: ' + cat.id + '\nCount: ' + cat.count);
       });
       $scope.thisCount.hour = $scope.hours;
       $scope.thisCount.minut = $scope.minutes;
+      $scope.thisCount.locType = VarFactory.getVar('locationType');
+      $scope.thisCount.loc = VarFactory.getVar('location');
+      $scope.thisCount.task = VarFactory.getVar('task');
       $scope.thisCount.categories = $scope.categories;
       //console.log('$scope.categories: ' + JSON.stringify($scope.thisCount.categories, null, 2));
       console.log('sendData -> \n' + JSON.stringify($scope.thisCount, null, 2));
+      $http({
+        method: 'POST',
+        url: url + 'sendCount',
+        data: $scope.thisCount,
+        headers: {
+          'Content-Type': 'application/json' 
+        }
+      }).then(function(res) {
+        //console.log('sendData -> ', res);
+      });
       $cordovaToast.showLongCenter('Din data er gemt...');
     }
   };
-})
+};
 
-.controller('CategoryDetailCtrl', function($scope, $stateParams, categories) {
-  $scope.category = categories.get($stateParams.categoryId);
-})
-
-.controller('SettingsCtrl', function($scope) {
-  $scope.settings = {
-  };
-  function uploadData() {
-
-  }
-});
+module.exports = countCtrl;

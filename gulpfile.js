@@ -5,10 +5,13 @@ var concat = require('gulp-concat');
 var sass = require('gulp-sass');
 var minifyCss = require('gulp-minify-css');
 var rename = require('gulp-rename');
+var browserify = require('browserify');
 var sh = require('shelljs');
+var source = require('vinyl-source-stream');
 
 var paths = {
-  sass: ['./scss/**/*.scss']
+  sass: ['./scss/**/*.scss'],
+  js: ['./www/js/**/*.js']
 };
 
 gulp.task('default', ['sass']);
@@ -28,8 +31,30 @@ gulp.task('sass', function(done) {
     .on('end', done);
 });
 
+gulp.task('browserify', function(){
+  var bundler = browserify({
+    entries: ['./www/js/main'],
+    extensions: ['.js'],
+    debug: true,
+  });
+
+  var buildBundle = function(){
+    return bundler.bundle()
+
+    .on('error', function(err){
+      console.log('build error', err);
+    })
+
+    .pipe(source('bundle.js'))
+
+    .pipe(gulp.dest('www/'));
+  };
+  return buildBundle();
+});
+
 gulp.task('watch', function() {
   gulp.watch(paths.sass, ['sass']);
+  gulp.watch(paths.js, ['browserify']);
 });
 
 gulp.task('serve', function(done) {
