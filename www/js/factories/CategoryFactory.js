@@ -14,9 +14,8 @@ var categoryFactory = function($http, VarFactory) {
   function getAllCategories(callback) {
     var locationTypeId = VarFactory.getVar('locationType');
     $http({
-      method: 'POST',
-      url: url + 'categories',
-      data: 'locationtypeid=' + 4
+      method: 'GET',
+      url: url + 'categories/' + locationTypeId
     }).then(function(res){
       callback(res);
     }, function(err) {
@@ -24,32 +23,7 @@ var categoryFactory = function($http, VarFactory) {
     });
   }
 
-  function resultToCat(res) {
-    categories = [];
-    var jsonData = res.data;
-    var jsonKeys = Object.keys(jsonData);
-    for (var i = 0; i < jsonKeys.length; i++) {
-      var jsonSingle = jsonData[jsonKeys[i]];
-      categories.push(jsonSingle);
-    }
-  }
-
-  function getTaskCategories(locID) {
-    console.log("getTaskCats: " + locID);
-    var catsRes = $http({
-      method: 'POST',
-      url: url + 'categories',
-      data: 'locationtypeid=' + locID 
-    });
-    catsRes.then(function(res) {
-      resultToCat(res);
-    });
-    return categories;
-  }
-
   return {
-    getTaskCategories: getTaskCategories,
-    resultToCat: resultToCat,
     getAllCategories: getAllCategories,
     all: function() {
       return categories;

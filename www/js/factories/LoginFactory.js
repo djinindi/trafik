@@ -4,14 +4,11 @@ var loginFactory = function($http) {
   return {
     signIn: function(id, rawDate) {
       return $http({
-        method: 'POST',
-        url: url + 'login',
-        data: 'userid=' + id + '&date=' + rawDate
+        method: 'GET',
+        url: url + 'login/' + rawDate + '/' + id
       });
     }
   };
-
-
 };
 
 module.exports = loginFactory;

@@ -1,5 +1,4 @@
-var url = require('../../config.js').apiUrl;
-var countCtrl = function($scope, $rootScope, $filter, CategoryFactory, VarFactory, $ionicPlatform, $cordovaToast, $http) {
+var countCtrl = function($scope, $rootScope, $filter, CategoryFactory, CountFactory, VarFactory, $ionicPlatform, $cordovaToast, $http) {
   $scope.$on("$ionicView.enter", function(scopes, states) {
     if(states.fromCache && states.stateName == "tab.count") {
       $scope.thisCount.name = VarFactory.getVar('userName');
@@ -74,6 +73,9 @@ var countCtrl = function($scope, $rootScope, $filter, CategoryFactory, VarFactor
       $scope.selectedTime = $filter('date')($scope.timePicker, 'HH:mm');
       $scope.hours = $scope.timePicker.getHours();
       $scope.minutes = $scope.timePicker.getMinutes();
+      if ($scope.minutes === 0) {
+        $scope.minutes = '00';
+      }
 
       console.log('Selected time is: ' + $scope.hours + ':' + $scope.minutes);
     }
@@ -93,18 +95,14 @@ var countCtrl = function($scope, $rootScope, $filter, CategoryFactory, VarFactor
       $scope.thisCount.task = VarFactory.getVar('task');
       $scope.thisCount.categories = $scope.categories;
       //console.log('$scope.categories: ' + JSON.stringify($scope.thisCount.categories, null, 2));
-      console.log('sendData -> \n' + JSON.stringify($scope.thisCount, null, 2));
-      $http({
-        method: 'POST',
-        url: url + 'sendCount',
-        data: $scope.thisCount,
-        headers: {
-          'Content-Type': 'application/json' 
-        }
-      }).then(function(res) {
-        //console.log('sendData -> ', res);
+      //console.log('sendData -> \n' + JSON.stringify($scope.thisCount, null, 2));
+      //console.log($scope.thisCount);
+      CountFactory.sendData($scope.thisCount).then(function(status) {
+        console.log(status);
+      }, function(data, status) {
+        console.log("sendData.Error -> data: " + data + ", status: " + status);
       });
-      $cordovaToast.showLongCenter('Din data er gemt...');
+      $cordovaToast.showLongCenter('Din data er gemt....');
     }
   };
 };

@@ -24,6 +24,11 @@ var loginCtrl = function($scope, $rootScope, $state, $http, $cordovaToast, $filt
         console.log("Bad Request");
         $cordovaToast.showLongBottom("Forkert ID eller Dato");
       }
+      else if (res.status == 400) {
+        console.log(res.data, res.status);
+        console.log("User id is blank");
+        $cordovaToast.showLongBottom("Bruger ID mangler");
+      }
     });
     console.log("Login, ID: " + $scope.user.id + " - Date: " + $scope.user.date);
   };

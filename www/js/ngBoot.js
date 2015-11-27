@@ -9,4 +9,5 @@ module.exports = function(app) {
   app.factory('CategoryFactory', require('./factories/CategoryFactory'));
   app.factory('LoginFactory', require('./factories/LoginFactory'));
   app.factory('VarFactory', require('./factories/VarFactory'));
+  app.factory('CountFactory', require('./factories/CountFactory'));
 };

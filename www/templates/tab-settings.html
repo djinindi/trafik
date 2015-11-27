@@ -1,9 +1,22 @@
 <ion-view view-title="Indstillinger">
   <ion-content>
     <ion-list>
-    <button ng-click="uploadData()">
-        Upload data
-    </button>
+      <button class="button button-block button-positive" ng-click="getCountHistory()">
+          Get History
+      </button>
+      <label class="item item-input item-select">
+        <div class="input-label">
+          Tidspunkt
+       </div>
+        <select ng-model="settings.selectedTime" ng-change="timeSelected()" ng-options="time for time in times" ng-init="settings.selectedTime = times[0]">
+        </select>
+      </label>
+      <ion-item class="item-stable" ng-repeat="count in history" ng-if="count.Time == settings.selectedTime" ng-show="settings.selectedTime">
+        {{count.Name}}
+        <label class="item-right">
+          {{count.Count}}
+        </label>
+      </ion-item>
     </ion-list>
   </ion-content>
 </ion-view>
