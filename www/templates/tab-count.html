@@ -23,7 +23,11 @@
           <ion-item class="item-accordion" ng-show="isInfoShown(category)">
             {{category.Info}}
             &nbsp;
+            <div ng-show="category.note">
+              Note: {{category.note}}
+            </div>
             <div class="input-right info-buttons">
+              <a class="button button-icon icon ion-compose" ng-click="note(category)"></a>
               <a class="button button-icon icon ion-plus" ng-click="plus(category)"></a>
               <a class="button button-icon icon ion-minus" ng-click="minus(category)"></a>
             </div>

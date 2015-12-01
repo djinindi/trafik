@@ -15,7 +15,7 @@ kaunta.config(function($httpProvider) {
   $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 });
 
-kaunta.run(function($ionicPlatform) {
+kaunta.run(function($ionicPlatform, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -28,5 +28,10 @@ kaunta.run(function($ionicPlatform) {
       // org.apache.cordova.statusbar required
       StatusBar.styleLightContent();
     }
+  });
+
+  $rootScope.$on("$stateChangeStart", function (event, toState, toParams, fromState, fromParams) {
+    console.log("$stateChangeStart!");
+    console.log("toState: " + toState.name + ", fromState: " + fromState.name);
   });
 });

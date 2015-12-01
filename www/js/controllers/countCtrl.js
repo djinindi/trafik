@@ -1,6 +1,6 @@
-var countCtrl = function($scope, $rootScope, $filter, CategoryFactory, CountFactory, VarFactory, $ionicPlatform, $cordovaToast, $http) {
+var countCtrl = function($scope, $rootScope, $filter, CategoryFactory, CountFactory, VarFactory, $ionicPlatform, $ionicPopup, $cordovaToast, $http) {
   $scope.$on("$ionicView.enter", function(scopes, states) {
-    if(states.fromCache && states.stateName == "tab.count") {
+    if(states.stateName == "tab.count") {
       $scope.thisCount.name = VarFactory.getVar('userName');
       $scope.thisCount.start = VarFactory.getVar('taskStart');
       $scope.thisCount.end = VarFactory.getVar('taskEnd');
@@ -31,6 +31,30 @@ var countCtrl = function($scope, $rootScope, $filter, CategoryFactory, CountFact
 
   $scope.isInfoShown = function(category) {
     return $scope.shownInfo === category;
+  };
+
+  $scope.note = function(category) {
+    var myPopup = $ionicPopup.prompt({
+      title: 'Note til kategori',
+      inputType: 'text',
+      cancelText: 'Annuller',
+      cancelType: 'button-assertive',
+      okText: 'Gem',
+      okType: 'button-balanced'
+    });
+    if (typeof (category.note) === 'undefined') {
+      myPopup.then(function(res) {
+        category.note = res;
+      });
+    } else {
+      myPopup.then(function(res) {
+        if (typeof (res) === 'undefined') {
+          return;
+        } else {
+          category.note = res;
+        }
+      });
+    }
   };
 
   $scope.minus = function(category) {
@@ -73,13 +97,22 @@ var countCtrl = function($scope, $rootScope, $filter, CategoryFactory, CountFact
       $scope.selectedTime = $filter('date')($scope.timePicker, 'HH:mm');
       $scope.hours = $scope.timePicker.getHours();
       $scope.minutes = $scope.timePicker.getMinutes();
+      if ($scope.hours.toString().length === 1) {
+        $scope.hours = ('0' + $scope.hours);
+      }
       if ($scope.minutes === 0) {
         $scope.minutes = '00';
-      }
-
+      } 
       console.log('Selected time is: ' + $scope.hours + ':' + $scope.minutes);
     }
   };
+
+  function resetCount() {
+    console.log("resetting!");
+    $scope.categories.forEach(function(cat) {
+      cat.count = 0;
+    });
+  }
 
   $scope.sendData = function (form) {
     if (form.$valid) {
@@ -99,10 +132,12 @@ var countCtrl = function($scope, $rootScope, $filter, CategoryFactory, CountFact
       //console.log($scope.thisCount);
       CountFactory.sendData($scope.thisCount).then(function(status) {
         console.log(status);
+        //$cordovaToast.showLongCenter('Din data er gemt....');
+        resetCount();
       }, function(data, status) {
         console.log("sendData.Error -> data: " + data + ", status: " + status);
+        $cordovaToast.showLongCenter('Der skete en fejl....');
       });
-      $cordovaToast.showLongCenter('Din data er gemt....');
     }
   };
 };
