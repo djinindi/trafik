@@ -1,6 +1,6 @@
 var loginCtrl = function($scope, $rootScope, $state, $http, $cordovaToast, $filter, LoginFactory, VarFactory) {
   $scope.user = {
-    date: $filter('date')(new Date(), 'd-MM-yy')
+    date: $filter('date')(new Date(), 'dd-MM-yy')
   };
 
   $scope.login = function() {
@@ -32,6 +32,10 @@ var loginCtrl = function($scope, $rootScope, $state, $http, $cordovaToast, $filt
     });
     console.log("Login, ID: " + $scope.user.id + " - Date: " + $scope.user.date);
   };
+
+  function destoryUserCredentials() {
+    varFactory.deleteVar("");
+  }
 };
 
 module.exports = loginCtrl;
