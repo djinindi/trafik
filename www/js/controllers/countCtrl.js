@@ -11,8 +11,13 @@ var countCtrl = function($scope, $rootScope, $filter, CategoryFactory, CountFact
   });
 
   $scope.getCategoryData = function() {
-    CategoryFactory.getAllCategories(function(cats) {
-      $scope.categories = cats.data;
+    CategoryFactory.getAllCategories().then(function(res) {
+      if (res.status == 200) {
+        $scope.categories = res.data;
+      }
+      else {
+        $cordovaToast.showLongBottom("Der skete en fejl...");
+      }
     });
   };
 
@@ -130,10 +135,16 @@ var countCtrl = function($scope, $rootScope, $filter, CategoryFactory, CountFact
       //console.log('$scope.categories: ' + JSON.stringify($scope.thisCount.categories, null, 2));
       //console.log('sendData -> \n' + JSON.stringify($scope.thisCount, null, 2));
       //console.log($scope.thisCount);
-      CountFactory.sendData($scope.thisCount).then(function(status) {
-        console.log(status);
-        //$cordovaToast.showLongCenter('Din data er gemt....');
-        resetCount();
+      CountFactory.sendData($scope.thisCount).then(function(res) {
+        if (res.status == 200) {
+          console.log(status);
+          $cordovaToast.showLongCenter('Din data er gemt....');
+          resetCount();
+        }
+        if (res.status == 404) {
+          console.log(status);
+          $cordovaToast.showLongCenter('Din data blev IKKE gemt!');
+        }
       }, function(data, status) {
         console.log("sendData.Error -> data: " + data + ", status: " + status);
         $cordovaToast.showLongCenter('Der skete en fejl....');

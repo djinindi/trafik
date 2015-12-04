@@ -4,9 +4,14 @@ var settingsCtrl = function($scope, CountFactory, VarFactory) {
   $scope.getCountHistory = function() {
     console.log('Getting History!');
     CountFactory.getHistory(VarFactory.getVar('task')).then(function(res) {
-      console.log(res.data);
-      $scope.history = res.data;
-      filterHistoryTimes();
+      if (res.status == 200) {
+        console.log(res.data);
+        $scope.history = res.data;
+        filterHistoryTimes();
+      }
+      if (res.status == 404) {
+        console.log("HISTORY NOT FOUND!");
+      }
     });
   };
 

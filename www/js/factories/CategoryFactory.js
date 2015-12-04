@@ -11,15 +11,11 @@ var categoryFactory = function($http, VarFactory) {
     return categories;
   }
 
-  function getAllCategories(callback) {
+  function getAllCategories() {
     var locationTypeId = VarFactory.getVar('locationType');
-    $http({
+    return $http({
       method: 'GET',
       url: url + 'categories/' + locationTypeId
-    }).then(function(res){
-      callback(res);
-    }, function(err) {
-      console.log('Mega ERROR', err);
     });
   }
 
