@@ -62,6 +62,7 @@ gulp.task('serve', function(done) {
 });
 
 gulp.task('ipad', function(done) {
+  sh.exec('ionic prepare ios', done);
   sh.exec('ionic run ios --target=\"iPad-Air\"', done);
 });
 

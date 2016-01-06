@@ -1,6 +1,10 @@
 var settingsCtrl = function($scope, CountFactory, VarFactory) {
   $scope.settings = {};
 
+  function init() {
+    $scope.getCountHistory();
+  }
+
   $scope.getCountHistory = function() {
     console.log('Getting History!');
     CountFactory.getHistory(VarFactory.getVar('task')).then(function(res) {
@@ -27,7 +31,8 @@ var settingsCtrl = function($scope, CountFactory, VarFactory) {
   $scope.timeSelected = function() {
     console.log("updated time to: " + $scope.settings.selectedTime);
   };
-  $scope.getCountHistory();
+  
+  init();
 };
 
 module.exports = settingsCtrl;
